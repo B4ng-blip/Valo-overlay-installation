@@ -1,0 +1,30 @@
+name: Build ValorantOverlay
+
+on:
+  push:                 # 파일을 올리면(커밋되면) 자동 실행
+  workflow_dispatch:    # Actions 탭에서 손으로도 실행 가능
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build Windows .exe
+        run: npx -y @yao-pkg/pkg . -t node20-win-x64 -o dist/ValorantOverlay.exe
+
+      - name: Build macOS app (optional)
+        continue-on-error: true
+        run: npx -y @yao-pkg/pkg . -t node20-macos-x64 -o dist/ValorantOverlay-mac
+
+      - name: Upload builds
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ValorantOverlay
+          path: dist/*
+          if-no-files-found: error
