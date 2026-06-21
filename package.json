@@ -1,0 +1,22 @@
+{
+  "name": "valorant-broadcast-overlay",
+  "version": "1.0.0",
+  "description": "VCT-style Valorant broadcast overlay for OBS, with an operator control panel. Zero runtime dependencies; can be packaged into a standalone .exe.",
+  "main": "server.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "OPEN=1 node server.js",
+    "build:win": "npx -y @yao-pkg/pkg . -t node20-win-x64 -o dist/ValorantOverlay.exe",
+    "build:mac": "npx -y @yao-pkg/pkg . -t node20-macos-x64 -o dist/ValorantOverlay-mac",
+    "build:linux": "npx -y @yao-pkg/pkg . -t node20-linux-x64 -o dist/ValorantOverlay-linux",
+    "build:all": "npx -y @yao-pkg/pkg . -t node20-win-x64,node20-macos-x64,node20-linux-x64 --out-path dist"
+  },
+  "pkg": {
+    "assets": [ "public/**/*" ],
+    "targets": [ "node20-win-x64" ],
+    "outputPath": "dist"
+  },
+  "engines": { "node": ">=16" },
+  "license": "MIT"
+}
